@@ -1,5 +1,5 @@
 // src/components/makanan/RecipeGrid.jsx
-import { Clock, Star, ChefHat } from 'lucide-react';
+import { Clock, Star, ChefHat, Share2 } from 'lucide-react';
 import { useState, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 import FavoriteButton from '../common/FavoriteButton';
@@ -7,6 +7,7 @@ import FavoriteButton from '../common/FavoriteButton';
 export default function RecipeGrid({ recipes, onRecipeClick, showHeader = true, onFavoriteToggle }) {
   const [visibleCards, setVisibleCards] = useState(new Set());
   const cardRefs = useRef([]);
+  const [copiedIds, setCopiedIds] = useState([]);
 
   useEffect(() => {
 
@@ -72,10 +73,35 @@ export default function RecipeGrid({ recipes, onRecipeClick, showHeader = true, 
                 <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent" />
 
                 {/* Favorite Button */}
-                <div className="absolute top-3 right-3 z-10">
+                <div className="absolute top-3 right-3 z-10 flex items-center gap-2">
                   <FavoriteButton recipeId={recipe.id} size="sm" onToggle={(id, isFavorited) => {
                     if (onFavoriteToggle) onFavoriteToggle(id, isFavorited);
                   }} />
+                  <button
+                    onClick={async (e) => {
+                      e.stopPropagation();
+                      const link = `${window.location.origin}${window.location.pathname}?recipe=${recipe.id}`;
+                      try {
+                        await navigator.clipboard.writeText(link);
+                      } catch {
+                        const ta = document.createElement('textarea');
+                        ta.value = link;
+                        document.body.appendChild(ta);
+                        ta.select();
+                        document.execCommand('copy');
+                        document.body.removeChild(ta);
+                      }
+                      setCopiedIds(prev => Array.from(new Set([...prev, recipe.id])));
+                      setTimeout(() => setCopiedIds(prev => prev.filter(i => i !== recipe.id)), 2000);
+                    }}
+                    title="Salin tautan resep"
+                    className="w-8 h-8 rounded-full bg-white/90 hover:bg-white text-slate-600 flex items-center justify-center shadow-sm"
+                  >
+                    <Share2 className="w-4 h-4" />
+                  </button>
+                  {copiedIds.includes(recipe.id) && (
+                    <span className="ml-2 text-xs text-green-600 font-semibold">Tersalin</span>
+                  )}
                 </div>
               </div>
               <div className="relative z-10 p-4 md:p-8">

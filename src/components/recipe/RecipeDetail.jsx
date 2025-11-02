@@ -5,7 +5,7 @@ import { useRecipe } from '../../hooks/useRecipes';
 import { useReviews, useCreateReview } from '../../hooks/useReviews';
 import { getUserIdentifier } from '../../hooks/useFavorites';
 import { formatDate, getDifficultyColor } from '../../utils/helpers';
-import { ArrowLeft, Clock, Users, ChefHat, Star, Send, Edit, Trash2 } from 'lucide-react';
+import { ArrowLeft, Clock, Users, ChefHat, Star, Send, Edit, Trash2, Share2 } from 'lucide-react';
 import recipeService from '../../services/recipeService';
 import ConfirmModal from '../modals/ConfirmModal';
 import FavoriteButton from '../common/FavoriteButton';
@@ -91,6 +91,21 @@ export default function RecipeDetail({ recipeId, onBack, onEdit, category = 'mak
         }
     };
 
+    const handleShare = async () => {
+        const link = `${window.location.origin}${window.location.pathname}?recipe=${recipeId}`;
+        try {
+            await navigator.clipboard.writeText(link);
+        } catch {
+            const ta = document.createElement('textarea');
+            ta.value = link;
+            document.body.appendChild(ta);
+            ta.select();
+            document.execCommand('copy');
+            document.body.removeChild(ta);
+        }
+        alert('Tautan resep berhasil disalin ke clipboard');
+    };
+
     if (recipeLoading) {
         return (
             <div className="min-h-screen flex items-center justify-center">
@@ -165,19 +180,24 @@ export default function RecipeDetail({ recipeId, onBack, onEdit, category = 'mak
 
                     {/* Action Buttons */}
                     {onEdit && (
-                        <div className="flex gap-2">
+                        <div className="flex gap-2 items-center">
                             <button
-                                onClick={() => {
-                                    console.log('🖱️ Edit button clicked in RecipeDetail');
-                                    console.log('📝 Recipe ID:', recipeId);
-                                    console.log('🔧 onEdit function:', onEdit);
-                                    onEdit(recipeId);
-                                }}
+                                onClick={() => onEdit(recipeId)}
                                 className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
                             >
                                 <Edit className="w-4 h-4" />
                                 <span className="hidden md:inline">Edit</span>
                             </button>
+
+                            <button
+                                onClick={handleShare}
+                                className="flex items-center gap-2 px-3 py-2 bg-white border border-slate-200 rounded-lg hover:bg-slate-50 transition-colors text-slate-700"
+                                title="Salin tautan resep"
+                            >
+                                <Share2 className="w-4 h-4" />
+                                <span className="hidden md:inline">Bagikan</span>
+                            </button>
+
                             <button
                                 onClick={() => setShowDeleteModal(true)}
                                 className="flex items-center gap-2 px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors"

@@ -1,5 +1,5 @@
 // src/main.jsx
-import { StrictMode, useState } from 'react'
+import { StrictMode, useState, useEffect } from 'react'
 import { createRoot } from 'react-dom/client'
 import SplashScreen from './pages/SplashScreen';
 import HomePage from './pages/HomePage';
@@ -22,6 +22,20 @@ function AppRoot() {
   const [selectedRecipeId, setSelectedRecipeId] = useState(null);
   const [selectedCategory, setSelectedCategory] = useState('makanan');
   const [editingRecipeId, setEditingRecipeId] = useState(null);
+
+  // If app loaded with ?recipe=<id> in URL, open detail view for that recipe
+  useEffect(() => {
+    try {
+      const params = new URLSearchParams(window.location.search);
+      const recipeParam = params.get('recipe');
+      if (recipeParam) {
+        setSelectedRecipeId(recipeParam);
+        setMode('detail');
+      }
+    } catch {
+      // ignore malformed URL or environments without window
+    }
+  }, []);
 
   const handleSplashComplete = () => {
     setShowSplash(false);
