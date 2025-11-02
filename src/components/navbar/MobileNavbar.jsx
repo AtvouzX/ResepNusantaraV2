@@ -1,5 +1,6 @@
 // src/components/MobileNavbar.jsx
 import { Home, ChefHat, Coffee, User, Plus } from 'lucide-react';
+import PropTypes from 'prop-types';
 
 export default function MobileNavbar({ currentPage, onNavigate, onCreateRecipe }) {
   const navItems = [
@@ -51,4 +52,10 @@ export default function MobileNavbar({ currentPage, onNavigate, onCreateRecipe }
     </>
   );
 }
+
+MobileNavbar.propTypes = {
+  currentPage: PropTypes.string,
+  onNavigate: PropTypes.func.isRequired,
+  onCreateRecipe: PropTypes.func,
+};
 

@@ -1,5 +1,6 @@
 // src/components/common/AdvancedFilter.jsx
 import { useState } from 'react';
+import PropTypes from 'prop-types';
 import { Filter, X, ChevronDown, SlidersHorizontal } from 'lucide-react';
 
 /**
@@ -181,8 +182,8 @@ export default function AdvancedFilter({ onFilterChange, onSearchChange, initial
                             <p className="text-sm text-slate-600 mb-2">Filter Aktif:</p>
                             <div className="flex flex-wrap gap-2">
                                 {searchQuery && (
-                                    <span className="inline-flex items-center gap-1 px-3 py-1 bg-blue-100 text-blue-700 rounded-full text-sm">
-                                        Search: "{searchQuery}"
+                                        <span className="inline-flex items-center gap-1 px-3 py-1 bg-blue-100 text-blue-700 rounded-full text-sm">
+                                        Search: {searchQuery}
                                         <button onClick={() => handleSearchChange('')}>
                                             <X className="w-3 h-3" />
                                         </button>
@@ -212,3 +213,9 @@ export default function AdvancedFilter({ onFilterChange, onSearchChange, initial
         </div>
     );
 }
+
+AdvancedFilter.propTypes = {
+    onFilterChange: PropTypes.func,
+    onSearchChange: PropTypes.func,
+    initialFilters: PropTypes.object,
+};

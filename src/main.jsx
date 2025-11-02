@@ -65,7 +65,7 @@ function AppRoot() {
     }
   };
 
-  const handleEditSuccess = (updatedRecipe) => {
+  const handleEditSuccess = () => {
     alert('Resep berhasil diperbarui!');
     setMode('list');
   };

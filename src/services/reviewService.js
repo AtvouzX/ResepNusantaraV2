@@ -7,12 +7,7 @@ class ReviewService {
      * @returns {Promise}
      */
     async getReviews(recipeId) {
-        try {
-            const response = await apiClient.get(`/api/v1/recipes/${recipeId}/reviews`);
-            return response;
-        } catch (error) {
-            throw error;
-        }
+        return await apiClient.get(`/api/v1/recipes/${recipeId}/reviews`);
     }
 
     /**
@@ -25,12 +20,7 @@ class ReviewService {
      * @returns {Promise}
      */
     async createReview(recipeId, reviewData) {
-        try {
-            const response = await apiClient.post(`/api/v1/recipes/${recipeId}/reviews`, reviewData);
-            return response;
-        } catch (error) {
-            throw error;
-        }
+        return await apiClient.post(`/api/v1/recipes/${recipeId}/reviews`, reviewData);
     }
 
     /**
@@ -42,12 +32,7 @@ class ReviewService {
      * @returns {Promise}
      */
     async updateReview(reviewId, reviewData) {
-        try {
-            const response = await apiClient.put(`/api/v1/reviews/${reviewId}`, reviewData);
-            return response;
-        } catch (error) {
-            throw error;
-        }
+        return await apiClient.put(`/api/v1/reviews/${reviewId}`, reviewData);
     }
 
     /**
@@ -56,12 +41,7 @@ class ReviewService {
      * @returns {Promise}
      */
     async deleteReview(reviewId) {
-        try {
-            const response = await apiClient.delete(`/api/v1/reviews/${reviewId}`);
-            return response;
-        } catch (error) {
-            throw error;
-        }
+        return await apiClient.delete(`/api/v1/reviews/${reviewId}`);
     }
 }
 

@@ -1,5 +1,6 @@
 // src/components/DesktopNavbar.jsx
 import { Plus } from 'lucide-react';
+import PropTypes from 'prop-types';
 import logoUrl from '../../assets/LOGORN.png';
 
 export default function DesktopNavbar({ currentPage, onNavigate, onCreateRecipe }) {
@@ -67,4 +68,10 @@ export default function DesktopNavbar({ currentPage, onNavigate, onCreateRecipe 
     </nav>
   );
 }
+
+DesktopNavbar.propTypes = {
+  currentPage: PropTypes.string,
+  onNavigate: PropTypes.func.isRequired,
+  onCreateRecipe: PropTypes.func,
+};
 

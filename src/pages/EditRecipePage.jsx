@@ -1,5 +1,6 @@
 // src/pages/EditRecipePage.jsx
 import { useState, useEffect } from 'react';
+import PropTypes from 'prop-types';
 import { ArrowLeft, Upload, X, Plus, Image as ImageIcon, Loader } from 'lucide-react';
 import recipeService from '../services/recipeService';
 import uploadService from '../services/uploadService';
@@ -668,3 +669,9 @@ export default function EditRecipePage({ recipeId, onBack, onSuccess }) {
         </div>
     );
 }
+
+EditRecipePage.propTypes = {
+    recipeId: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
+    onBack: PropTypes.func,
+    onSuccess: PropTypes.func,
+};

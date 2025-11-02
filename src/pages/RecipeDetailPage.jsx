@@ -1,5 +1,6 @@
 // src/pages/RecipeDetailPage.jsx
 import { useState } from 'react';
+import PropTypes from 'prop-types';
 import { useRecipe } from '../hooks/useRecipes';
 import { useReviews, useCreateReview } from '../hooks/useReviews';
 import { useIsFavorited } from '../hooks/useFavorites';
@@ -276,3 +277,8 @@ export default function RecipeDetailPage({ recipeId, onBack }) {
         </div>
     );
 }
+
+RecipeDetailPage.propTypes = {
+    recipeId: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
+    onBack: PropTypes.func,
+};

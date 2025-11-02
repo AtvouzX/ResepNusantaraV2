@@ -1,11 +1,11 @@
 // src/components/recipe/RecipeDetail.jsx
 import { useState } from 'react';
+import PropTypes from 'prop-types';
 import { useRecipe } from '../../hooks/useRecipes';
 import { useReviews, useCreateReview } from '../../hooks/useReviews';
-import { useIsFavorited } from '../../hooks/useFavorites';
 import { getUserIdentifier } from '../../hooks/useFavorites';
-import { formatDate, getDifficultyColor, getStarRating } from '../../utils/helpers';
-import { ArrowLeft, Heart, Clock, Users, ChefHat, Star, Send, Edit, Trash2 } from 'lucide-react';
+import { formatDate, getDifficultyColor } from '../../utils/helpers';
+import { ArrowLeft, Clock, Users, ChefHat, Star, Send, Edit, Trash2 } from 'lucide-react';
 import recipeService from '../../services/recipeService';
 import ConfirmModal from '../modals/ConfirmModal';
 import FavoriteButton from '../common/FavoriteButton';
@@ -15,7 +15,6 @@ export default function RecipeDetail({ recipeId, onBack, onEdit, category = 'mak
     const { recipe, loading: recipeLoading, error: recipeError } = useRecipe(recipeId);
     const { reviews, loading: reviewsLoading, refetch: refetchReviews } = useReviews(recipeId);
     const { createReview, loading: createLoading } = useCreateReview();
-    const { isFavorited, loading: favLoading, toggleFavorite } = useIsFavorited(recipeId);
 
     const [rating, setRating] = useState(5);
     const [comment, setComment] = useState('');
@@ -68,9 +67,7 @@ export default function RecipeDetail({ recipeId, onBack, onEdit, category = 'mak
         }
     };
 
-    const handleToggleFavorite = async () => {
-        await toggleFavorite();
-    };
+    // Favorite handling is delegated to FavoriteButton (local storage)
 
     const handleDeleteRecipe = async () => {
         try {
@@ -453,4 +450,11 @@ export default function RecipeDetail({ recipeId, onBack, onEdit, category = 'mak
         </div>
     );
 }
+
+RecipeDetail.propTypes = {
+    recipeId: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
+    onBack: PropTypes.func,
+    onEdit: PropTypes.func,
+    category: PropTypes.string,
+};
 

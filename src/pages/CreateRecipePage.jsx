@@ -1,5 +1,6 @@
 // src/pages/CreateRecipePage.jsx
 import { useState, useEffect } from 'react';
+import PropTypes from 'prop-types';
 import { ArrowLeft, Upload, X, Plus, Image as ImageIcon, Loader, Save, AlertCircle, CheckCircle } from 'lucide-react';
 import recipeService from '../services/recipeService';
 import uploadService from '../services/uploadService';
@@ -32,7 +33,7 @@ export default function CreateRecipePage({ onBack, onSuccess }) {
     const [error, setError] = useState('');
     const [showDraftModal, setShowDraftModal] = useState(false);
     const [draftTimestamp, setDraftTimestamp] = useState(null);
-    const [autoSaveEnabled, setAutoSaveEnabled] = useState(true);
+    const [autoSaveEnabled] = useState(true);
 
     // Check for existing draft on mount
     useEffect(() => {
@@ -737,4 +738,9 @@ export default function CreateRecipePage({ onBack, onSuccess }) {
         </div>
     );
 }
+
+CreateRecipePage.propTypes = {
+    onBack: PropTypes.func,
+    onSuccess: PropTypes.func,
+};
 

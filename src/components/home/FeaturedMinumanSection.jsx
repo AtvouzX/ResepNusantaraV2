@@ -1,5 +1,6 @@
 // src/components/home/FeaturedMinumanSection.jsx
-import { Clock, Star, ChefHat, Coffee } from 'lucide-react';
+import { Clock, Star, Coffee } from 'lucide-react';
+import PropTypes from 'prop-types';
 import { useState, useEffect, useRef } from 'react';
 
 export default function FeaturedMinumanSection({ recipes, loading, error, onRecipeClick, onNavigate }) {
@@ -140,3 +141,11 @@ export default function FeaturedMinumanSection({ recipes, loading, error, onReci
     </section>
   );
 }
+
+FeaturedMinumanSection.propTypes = {
+  recipes: PropTypes.array,
+  loading: PropTypes.bool,
+  error: PropTypes.any,
+  onRecipeClick: PropTypes.func,
+  onNavigate: PropTypes.func,
+};

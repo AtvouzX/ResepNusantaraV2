@@ -28,7 +28,6 @@ apiClient.interceptors.response.use(
         return response.data;
     },
     (error) => {
-        const errorMessage = error.response?.data?.message || error.message || 'An error occurred';
         return Promise.reject(error.response?.data || error);
     }
 );

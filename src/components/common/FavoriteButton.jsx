@@ -1,5 +1,6 @@
 // src/components/common/FavoriteButton.jsx
 import { useState, useEffect } from 'react';
+import PropTypes from 'prop-types';
 import { Heart } from 'lucide-react';
 
 /**
@@ -94,3 +95,11 @@ export default function FavoriteButton({ recipeId, onToggle, showCount = false, 
         </button>
     );
 }
+
+FavoriteButton.propTypes = {
+    recipeId: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
+    onToggle: PropTypes.func,
+    showCount: PropTypes.bool,
+    initialCount: PropTypes.number,
+    size: PropTypes.oneOf(['sm', 'md', 'lg']),
+};

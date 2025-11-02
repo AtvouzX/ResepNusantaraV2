@@ -1,6 +1,7 @@
 // src/components/minuman/RecipeGrid.jsx
-import { Clock, Star, Coffee, ChefHat } from 'lucide-react';
+import { Clock, Star, ChefHat } from 'lucide-react';
 import { useState, useEffect, useRef } from 'react';
+import PropTypes from 'prop-types';
 import FavoriteButton from '../common/FavoriteButton';
 
 export default function RecipeGrid({ recipes, onRecipeClick }) {
@@ -108,3 +109,8 @@ export default function RecipeGrid({ recipes, onRecipeClick }) {
     </section>
   );
 }
+
+RecipeGrid.propTypes = {
+  recipes: PropTypes.array.isRequired,
+  onRecipeClick: PropTypes.func,
+};

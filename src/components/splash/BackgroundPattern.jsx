@@ -1,5 +1,6 @@
 // src/components/splash/BackgroundPattern.jsx
 import { useMemo } from 'react';
+import PropTypes from 'prop-types';
 
 export default function BackgroundPattern({ fadeOut }) {
   const patternDataUri = useMemo(() => {
@@ -20,3 +21,7 @@ export default function BackgroundPattern({ fadeOut }) {
     />
   );
 }
+
+BackgroundPattern.propTypes = {
+  fadeOut: PropTypes.bool,
+};

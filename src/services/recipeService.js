@@ -14,12 +14,7 @@ class RecipeService {
      * @returns {Promise}
      */
     async getRecipes(params = {}) {
-        try {
-            const response = await apiClient.get('/api/v1/recipes', { params });
-            return response;
-        } catch (error) {
-            throw error;
-        }
+        return await apiClient.get('/api/v1/recipes', { params });
     }
 
     /**
@@ -28,12 +23,7 @@ class RecipeService {
      * @returns {Promise}
      */
     async getRecipeById(id) {
-        try {
-            const response = await apiClient.get(`/api/v1/recipes/${id}`);
-            return response;
-        } catch (error) {
-            throw error;
-        }
+        return await apiClient.get(`/api/v1/recipes/${id}`);
     }
 
     /**
@@ -42,12 +32,7 @@ class RecipeService {
      * @returns {Promise}
      */
     async createRecipe(recipeData) {
-        try {
-            const response = await apiClient.post('/api/v1/recipes', recipeData);
-            return response;
-        } catch (error) {
-            throw error;
-        }
+        return await apiClient.post('/api/v1/recipes', recipeData);
     }
 
     /**
@@ -57,12 +42,7 @@ class RecipeService {
      * @returns {Promise}
      */
     async updateRecipe(id, recipeData) {
-        try {
-            const response = await apiClient.put(`/api/v1/recipes/${id}`, recipeData);
-            return response;
-        } catch (error) {
-            throw error;
-        }
+        return await apiClient.put(`/api/v1/recipes/${id}`, recipeData);
     }
 
     /**
@@ -72,12 +52,7 @@ class RecipeService {
      * @returns {Promise}
      */
     async patchRecipe(id, partialData) {
-        try {
-            const response = await apiClient.patch(`/api/v1/recipes/${id}`, partialData);
-            return response;
-        } catch (error) {
-            throw error;
-        }
+        return await apiClient.patch(`/api/v1/recipes/${id}`, partialData);
     }
 
     /**
@@ -86,12 +61,7 @@ class RecipeService {
      * @returns {Promise}
      */
     async deleteRecipe(id) {
-        try {
-            const response = await apiClient.delete(`/api/v1/recipes/${id}`);
-            return response;
-        } catch (error) {
-            throw error;
-        }
+        return await apiClient.delete(`/api/v1/recipes/${id}`);
     }
 }
 

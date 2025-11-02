@@ -29,7 +29,7 @@ export const getUserProfile = () => {
             bio: '',
             userId: getUserIdentifier()
         };
-    } catch (error) {
+    } catch {
         return {
             username: 'Pengguna',
             avatar: null,

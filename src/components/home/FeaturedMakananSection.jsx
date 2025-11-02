@@ -1,6 +1,7 @@
 // src/components/home/FeaturedMakananSection.jsx
 import { Clock, Star, ChefHat } from 'lucide-react';
 import { useState, useEffect, useRef } from 'react';
+import PropTypes from 'prop-types';
 
 export default function FeaturedMakananSection({ recipes, loading, error, onRecipeClick, onNavigate }) {
   const [visibleMakanan, setVisibleMakanan] = useState(new Set());
@@ -139,3 +140,11 @@ export default function FeaturedMakananSection({ recipes, loading, error, onReci
     </section>
   );
 }
+
+FeaturedMakananSection.propTypes = {
+  recipes: PropTypes.array,
+  loading: PropTypes.bool,
+  error: PropTypes.any,
+  onRecipeClick: PropTypes.func,
+  onNavigate: PropTypes.func,
+};
