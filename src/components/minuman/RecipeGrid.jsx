@@ -3,6 +3,7 @@ import { Clock, Star, ChefHat, Share2 } from 'lucide-react';
 import { useState, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 import FavoriteButton from '../common/FavoriteButton';
+import LazyImage from '../common/LazyImage';
 
 export default function RecipeGrid({ recipes, onRecipeClick, showHeader = true, onFavoriteToggle }) {
   const [visibleCards, setVisibleCards] = useState(new Set());
@@ -63,7 +64,7 @@ export default function RecipeGrid({ recipes, onRecipeClick, showHeader = true, 
               className="relative bg-white/15 backdrop-blur-xl border border-white/25 rounded-2xl md:rounded-3xl overflow-hidden shadow-lg md:shadow-2xl shadow-green-500/5 hover:shadow-green-500/15 transition-all duration-500 cursor-pointer group-hover:scale-105 group-hover:bg-white/20">
               <div className="absolute inset-0 bg-gradient-to-br from-white/5 via-transparent to-green-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
               <div className="relative h-32 md:h-56 overflow-hidden">
-                <img
+                <LazyImage
                   src={recipe.image_url}
                   alt={recipe.name}
                   className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"

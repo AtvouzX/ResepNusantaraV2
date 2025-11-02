@@ -9,6 +9,7 @@ import { ArrowLeft, Clock, Users, ChefHat, Star, Send, Edit, Trash2, Share2 } fr
 import recipeService from '../../services/recipeService';
 import ConfirmModal from '../modals/ConfirmModal';
 import FavoriteButton from '../common/FavoriteButton';
+import LazyImage from '../common/LazyImage';
 import userService from '../../services/userService';
 
 export default function RecipeDetail({ recipeId, onBack, onEdit, category = 'makanan' }) {
@@ -215,11 +216,11 @@ export default function RecipeDetail({ recipeId, onBack, onEdit, category = 'mak
                 <div className="bg-white/60 backdrop-blur-sm rounded-3xl overflow-hidden shadow-xl border border-white/40 mb-8">
                     {/* Hero Image */}
                     <div className="relative h-64 md:h-96 overflow-hidden">
-                        <img
-                            src={recipe.image_url}
-                            alt={recipe.name}
-                            className="w-full h-full object-cover"
-                        />
+                            <LazyImage
+                                src={recipe.image_url}
+                                alt={recipe.name}
+                                className="w-full h-full object-cover"
+                            />
                         <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
 
                         {/* Favorite Button - Use component */}
