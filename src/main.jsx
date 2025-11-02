@@ -9,6 +9,7 @@ import ProfilePage from './pages/ProfilePage';
 import CreateRecipePage from './pages/CreateRecipePage';
 import EditRecipePage from './pages/EditRecipePage';
 import RecipeDetail from './components/recipe/RecipeDetail';
+import FavoritesPage from './pages/FavoritesPage';
 import DesktopNavbar from './components/navbar/DesktopNavbar';
 import MobileNavbar from './components/navbar/MobileNavbar';
 import './index.css'
@@ -114,6 +115,8 @@ function AppRoot() {
         return <MinumanPage onRecipeClick={handleRecipeClick} />;
       case 'profile':
         return <ProfilePage onRecipeClick={handleRecipeClick} />;
+      case 'favorites':
+        return <FavoritesPage onRecipeClick={handleRecipeClick} />;
       default:
         return <HomePage onRecipeClick={handleRecipeClick} onNavigate={handleNavigation} />;
     }

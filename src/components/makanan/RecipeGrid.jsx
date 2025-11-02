@@ -4,7 +4,7 @@ import { useState, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 import FavoriteButton from '../common/FavoriteButton';
 
-export default function RecipeGrid({ recipes, onRecipeClick }) {
+export default function RecipeGrid({ recipes, onRecipeClick, showHeader = true, onFavoriteToggle }) {
   const [visibleCards, setVisibleCards] = useState(new Set());
   const cardRefs = useRef([]);
 
@@ -38,12 +38,16 @@ export default function RecipeGrid({ recipes, onRecipeClick }) {
 
   return (
     <section>
-      <h1 className="text-3xl md:text-5xl font-bold text-slate-800 text-center mb-4">
-        Jelajahi Resep Makanan
-      </h1>
-      <p className="text-center text-slate-500 max-w-2xl mx-auto mb-8">
-        Temukan inspirasi masakan Nusantara favoritmu. Dari hidangan utama hingga camilan, semua ada di sini.
-      </p>
+      {showHeader && (
+        <>
+          <h1 className="text-3xl md:text-5xl font-bold text-slate-800 text-center mb-4">
+            Jelajahi Resep Makanan
+          </h1>
+          <p className="text-center text-slate-500 max-w-2xl mx-auto mb-8">
+            Temukan inspirasi masakan Nusantara favoritmu. Dari hidangan utama hingga camilan, semua ada di sini.
+          </p>
+        </>
+      )}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-8">
         {recipes.map((recipe, index) => (
           <div
@@ -69,7 +73,9 @@ export default function RecipeGrid({ recipes, onRecipeClick }) {
 
                 {/* Favorite Button */}
                 <div className="absolute top-3 right-3 z-10">
-                  <FavoriteButton recipeId={recipe.id} size="sm" />
+                  <FavoriteButton recipeId={recipe.id} size="sm" onToggle={(id, isFavorited) => {
+                    if (onFavoriteToggle) onFavoriteToggle(id, isFavorited);
+                  }} />
                 </div>
               </div>
               <div className="relative z-10 p-4 md:p-8">
@@ -114,4 +120,15 @@ export default function RecipeGrid({ recipes, onRecipeClick }) {
 RecipeGrid.propTypes = {
   recipes: PropTypes.array.isRequired,
   onRecipeClick: PropTypes.func,
+};
+
+RecipeGrid.defaultProps = {
+  showHeader: true,
+};
+
+RecipeGrid.propTypes = {
+  recipes: PropTypes.array.isRequired,
+  onRecipeClick: PropTypes.func,
+  showHeader: PropTypes.bool,
+  onFavoriteToggle: PropTypes.func,
 };
