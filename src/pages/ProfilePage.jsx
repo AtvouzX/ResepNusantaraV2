@@ -6,10 +6,15 @@ export default function ProfilePage() {
         <h1 className="text-2xl md:text-3xl font-bold text-gray-800 mb-6">
           Profile Pengguna
         </h1>
-        <div className="bg-white rounded-lg shadow-lg p-6">
-          <p className="text-gray-600">
-            Konten halaman profile akan diisi di sini...
-          </p>
+        <div className="bg-white/15 backdrop-blur-2xl border border-white/25 rounded-3xl shadow-xl p-8 text-center max-w-md mx-auto">
+          <img
+            src="https://avatars.githubusercontent.com/atvouzx"
+            alt="Profile Avatar"
+            className="w-32 h-32 rounded-full mx-auto mb-4 shadow-lg border-4 border-white/50"
+          />
+          <h2 className="text-2xl font-bold text-slate-800 mb-2">Faiz Abdul Hanif</h2>
+          <p className="text-slate-600 mb-6">21120123140138</p>
+            <p className="text-slate-600 mb-6">Kelompok 21</p>
         </div>
       </div>
     </div>
