@@ -35,8 +35,22 @@ export default function EditRecipePage({ recipeId, onBack, onSuccess }) {
                 setLoading(true);
                 const result = await recipeService.getRecipeById(recipeId);
 
-                if (result.success) {
-                    const recipe = result.data;
+                // Normalize response shape: apiClient returns response.data directly,
+                // but some service wrappers may return { success, data }.
+                let recipe = null;
+                if (!result) {
+                    throw new Error('Resep tidak ditemukan');
+                }
+                if (result.success && result.data) {
+                    recipe = result.data;
+                } else if (result.data) {
+                    recipe = result.data;
+                } else if (result.recipe) {
+                    recipe = result.recipe;
+                } else {
+                    // Assume the API returned the recipe object directly
+                    recipe = result;
+                }
                     setFormData({
                         name: recipe.name || '',
                         category: recipe.category || 'makanan',
@@ -48,28 +62,62 @@ export default function EditRecipePage({ recipeId, onBack, onSuccess }) {
                         is_featured: recipe.is_featured || false,
                     });
 
-                    setCurrentImageUrl(recipe.image_url || '');
-                    setIngredients(recipe.ingredients && recipe.ingredients.length > 0
-                        ? recipe.ingredients
-                        : [{ name: '', quantity: '' }]
+                    // Image: support multiple possible field names
+                    setCurrentImageUrl(
+                        recipe.image_url || recipe.image || recipe.imageUrl || ''
                     );
 
-                    // Convert steps to array of strings if they're objects
+                    // Ingredients: normalize to objects { name, quantity }
+                    let normalizedIngredients = [{ name: '', quantity: '' }];
+                    if (Array.isArray(recipe.ingredients) && recipe.ingredients.length > 0) {
+                        if (typeof recipe.ingredients[0] === 'string') {
+                            normalizedIngredients = recipe.ingredients.map((name) => ({ name, quantity: '' }));
+                        } else {
+                            normalizedIngredients = recipe.ingredients.map((ing) => ({
+                                name: ing.name || ing.nama || ing.item || '',
+                                quantity: ing.quantity || ing.qty || ing.jumlah || ''
+                            }));
+                        }
+                    }
+                    setIngredients(normalizedIngredients);
+
+                    // Steps: convert to array of strings supporting many shapes and keys (including non-english keys)
                     let stepsArray = [''];
-                    if (recipe.steps && recipe.steps.length > 0) {
-                        stepsArray = recipe.steps.map(step => {
-                            // If step is an object with a 'step' property, extract it
-                            if (typeof step === 'object' && step.step) {
-                                return step.step;
+                    if (Array.isArray(recipe.steps) && recipe.steps.length > 0) {
+                        stepsArray = recipe.steps.map((step) => {
+                            // Determine a textual representation for the step
+                            if (typeof step === 'string') return step;
+
+                            if (typeof step === 'object' && step !== null) {
+                                const candidates = [
+                                    'instruction', 'step', 'text', 'description',
+                                    'langkah', 'langkah_text', 'detail', 'note'
+                                ];
+
+                                for (const k of candidates) {
+                                    const v = step[k];
+                                    if (v !== undefined && v !== null) return String(v);
+                                }
+
+                                // Fallback: first string property
+                                for (const key of Object.keys(step)) {
+                                    const val = step[key];
+                                    if (typeof val === 'string' && val.trim()) return val;
+                                }
+
+                                // Last resort: JSON stringify
+                                try {
+                                    return JSON.stringify(step) || '';
+                                } catch {
+                                    return '';
+                                }
                             }
-                            // If step is already a string, use it
-                            return typeof step === 'string' ? step : '';
+
+                            return '';
                         });
                     }
+                    if (stepsArray.length === 0) stepsArray = [''];
                     setSteps(stepsArray);
-                } else {
-                    throw new Error('Gagal memuat data resep');
-                }
             } catch (err) {
                 setError(err.message || 'Terjadi kesalahan saat memuat resep');
             } finally {
@@ -244,6 +292,9 @@ export default function EditRecipePage({ recipeId, onBack, onSuccess }) {
             } else if (!currentImageUrl && !imageFile) {
                 // If original image was removed and no new image
                 updateData.image_url = '';
+            } else {
+                // Preserve existing image URL when no new image was uploaded
+                if (currentImageUrl) updateData.image_url = currentImageUrl;
             }
 
             // Step 2: Add other fields

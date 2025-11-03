@@ -23,7 +23,72 @@ class RecipeService {
      * @returns {Promise}
      */
     async getRecipeById(id) {
-        return await apiClient.get(`/api/v1/recipes/${id}`);
+        const result = await apiClient.get(`/api/v1/recipes/${id}`);
+
+        // If the API returns a wrapper { success, data }, extract the recipe object
+        let raw = result;
+        if (!raw) return raw;
+
+        let recipe = null;
+        if (raw.success && raw.data) recipe = raw.data;
+        else if (raw.data) recipe = raw.data;
+        else if (raw.recipe) recipe = raw.recipe;
+        else recipe = raw;
+
+        // Normalization helper: ensure common fields exist and are in predictable shapes
+        const normalizeRecipe = (r) => {
+            if (!r || typeof r !== 'object') return r;
+
+            // Image
+            const image_url = r.image_url || r.image || r.imageUrl || '';
+
+            // Ingredients -> array of { id?, name, quantity }
+            let ingredients = [];
+            if (Array.isArray(r.ingredients)) {
+                ingredients = r.ingredients.map((ing) => {
+                    if (!ing) return { name: '', quantity: '' };
+                    if (typeof ing === 'string') return { name: ing, quantity: '' };
+                    return {
+                        id: ing.id || ing._id || null,
+                        name: ing.name || ing.nama || ing.item || '',
+                        quantity: ing.quantity || ing.qty || ing.jumlah || '',
+                    };
+                });
+            }
+
+            // Steps -> array of objects { id?, step_number?, instruction }
+            let steps = [];
+            if (Array.isArray(r.steps)) {
+                steps = r.steps.map((s, idx) => {
+                    if (!s) return { id: null, step_number: idx + 1, instruction: '' };
+                    if (typeof s === 'string') return { id: null, step_number: idx + 1, instruction: s };
+                    return {
+                        id: s.id || s._id || null,
+                        step_number: s.step_number ?? s.number ?? s.order ?? (s.step_number === 0 ? 0 : idx + 1),
+                        instruction: s.instruction || s.step || s.text || s.description || s.langkah || '',
+                    };
+                });
+            }
+
+            return {
+                ...r,
+                image_url,
+                ingredients,
+                steps,
+            };
+        };
+
+        const normalized = normalizeRecipe(recipe);
+
+        // Preserve wrapper shape: return { success, data }
+        if (raw && typeof raw === 'object' && 'success' in raw) {
+            return {
+                ...raw,
+                data: normalized,
+            };
+        }
+
+        return { success: true, data: normalized };
     }
 
     /**
