@@ -7,7 +7,7 @@ export default function MobileNavbar({ currentPage, onNavigate, onCreateRecipe }
     { id: 'home', label: 'Beranda', icon: Home },
     { id: 'makanan', label: 'Makanan', icon: ChefHat },
     { id: 'minuman', label: 'Minuman', icon: Coffee },
-    { id: 'favorites', label: 'Favorit', icon: Heart },
+    // { id: 'favorites', label: 'Favorit', icon: Heart },
     { id: 'profile', label: 'Profile', icon: User }
   ];
 

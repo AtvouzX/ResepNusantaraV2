@@ -8,7 +8,7 @@ export default function DesktopNavbar({ currentPage, onNavigate, onCreateRecipe 
     { id: 'home', label: 'Beranda' },
     { id: 'makanan', label: 'Makanan' },
     { id: 'minuman', label: 'Minuman' },
-    { id: 'favorites', label: 'Favorit' },
+    // { id: 'favorites', label: 'Favorit' },
     { id: 'profile', label: 'Profile' }
   ];
 

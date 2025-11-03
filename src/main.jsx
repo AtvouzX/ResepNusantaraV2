@@ -9,7 +9,7 @@ import ProfilePage from './pages/ProfilePage';
 import CreateRecipePage from './pages/CreateRecipePage';
 import EditRecipePage from './pages/EditRecipePage';
 import RecipeDetail from './components/recipe/RecipeDetail';
-import FavoritesPage from './pages/FavoritesPage';
+// Favorites page is now embedded into ProfilePage; the standalone FavoritesPage file remains but is not imported here.
 import DesktopNavbar from './components/navbar/DesktopNavbar';
 import MobileNavbar from './components/navbar/MobileNavbar';
 import './index.css'
@@ -130,7 +130,9 @@ function AppRoot() {
       case 'profile':
         return <ProfilePage onRecipeClick={handleRecipeClick} />;
       case 'favorites':
-        return <FavoritesPage onRecipeClick={handleRecipeClick} />;
+        // Favorites are now part of the profile page; render ProfilePage instead so
+        // the user sees favorites within their profile context.
+        return <ProfilePage onRecipeClick={handleRecipeClick} showFavoritesInitially={true} />;
       default:
         return <HomePage onRecipeClick={handleRecipeClick} onNavigate={handleNavigation} />;
     }
